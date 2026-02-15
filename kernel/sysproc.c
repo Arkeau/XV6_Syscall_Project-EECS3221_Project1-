@@ -6,6 +6,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+#include "procinfo.h"
 
 uint64
 sys_exit(void)
@@ -114,3 +115,24 @@ sys_hello(void)
   printf("Hello from kernel!\n");
   return 0;
 }
+
+uint64
+sys_getprocs(void)
+{
+  uint64 user_addr;   
+    int max_procs;
+
+    
+    if(argaddr(0, &user_addr) < 0)
+        return -1;
+
+    if(argint(1, &max_procs) < 0)
+        return -1;
+
+    if(max_procs <= 0)
+        return -1;
+
+    return 0; 
+
+}
+
