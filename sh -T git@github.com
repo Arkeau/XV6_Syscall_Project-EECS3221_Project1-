@@ -1,0 +1,10 @@
+user.name=Arkeau
+user.email=ammarqudrat@gmail.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=https://github.com/mit-pdos/xv6-riscv.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.riscv.remote=origin
+branch.riscv.merge=refs/heads/riscv
