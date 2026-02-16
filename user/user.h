@@ -1,6 +1,8 @@
 #define SBRK_ERROR ((char *)-1)
 
 struct stat;
+struct procinfo;
+int getprocs(struct procinfo *pinfo, int max_procs);
 
 // system calls
 int fork(void);

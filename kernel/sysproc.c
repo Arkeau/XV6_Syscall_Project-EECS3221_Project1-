@@ -7,6 +7,7 @@
 #include "proc.h"
 #include "vm.h"
 #include "procinfo.h"
+extern struct proc proc[NPROC];
 
 uint64
 sys_exit(void)
@@ -132,7 +133,38 @@ sys_getprocs(void)
     if(max_procs <= 0)
         return -1;
 
-    return 0; 
+    struct procinfo pi; 
+    int count = 0;   
+    for(int i = 0; i < NPROC; i++){
+        struct proc *p = &proc[i];
+
+        acquire(&p->lock);
+        if(p->state != UNUSED){
+            
+            pi.pid   = p->pid;
+            pi.ppid  = p->parent ? p->parent->pid : 0;
+            pi.state = p->state;
+            pi.sz    = p->sz;
+            safestrcpy(pi.name, p->name, sizeof(pi.name));
+
+            
+            if(copyout(myproc()->pagetable,
+                       user_addr + count * sizeof(struct procinfo),
+                       (char*)&pi,
+                       sizeof(pi)) < 0){
+                release(&p->lock);
+                return -1;
+            }
+
+            count++;
+        }
+        release(&p->lock);
+
+        if(count >= max_procs)
+            break;  
+
+         return count;
+    }
 
 }
 
