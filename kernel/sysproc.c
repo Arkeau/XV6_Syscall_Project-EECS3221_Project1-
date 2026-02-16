@@ -163,8 +163,9 @@ sys_getprocs(void)
         if(count >= max_procs)
             break;  
 
-         return count;
+         
     }
+    return count;
 
 }
 
